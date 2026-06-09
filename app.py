@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import os
 import time
+import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor
 from utils.api import fetch_movie_details, fetch_trending_movies, fetch_movie_trailer, get_api_key, check_tmdb_connectivity, get_local_fallback
 from utils.recommender import load_movies_df, load_similarity_matrix, get_recommendations
@@ -38,12 +40,45 @@ if os.path.exists(css_path):
     with open(css_path, "r") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# ---------- AUTOMATIC MODEL REGENERATION ON STARTUP ----------
+REQUIRED_MODEL_FILES = [
+    'model/movie_dict.pkl',
+    'model/similarity_tfidf.pkl',
+    'model/similarity_cv.pkl',
+    'model/similarity.pkl'
+]
+
+# Check if any model files are missing
+missing_models = [f for f in REQUIRED_MODEL_FILES if not os.path.exists(f)]
+if missing_models:
+    st.info("📦 **First-time Setup:** Recommendation model files not found. Automatically generating models from datasets...")
+    with st.spinner("Building ML models... This will take about 10-15 seconds."):
+        try:
+            # Run model_builder.py using current python environment interpreter
+            result = subprocess.run(
+                [sys.executable, "model_builder.py"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            st.success("✅ Models generated successfully!")
+            st.toast("Model files generated successfully!", icon="✅")
+            time.sleep(1)
+            st.rerun()
+        except subprocess.CalledProcessError as e:
+            st.error(f"❌ Failed to build models automatically:\n{e.stderr or e.stdout}")
+            st.stop()
+        except Exception as e:
+            st.error(f"❌ Error initiating model builder: {e}")
+            st.stop()
+
 # ---------- LOAD MODEL FILES (CACHED ONCE, LAZY LOADING SIMILARITY) ----------
 movies_df = load_movies_df()
 
 if movies_df is None:
     st.error("Unable to load model datasets. Please check model/ folder files.")
     st.stop()
+
 
 # ---------- INSTANT CONNECTIVITY CHECK (ONCE ON STARTUP) ----------
 if "is_offline_mode" not in st.session_state:

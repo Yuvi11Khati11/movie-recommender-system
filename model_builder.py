@@ -4,6 +4,10 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pickle
 import sys
+import os
+
+# Ensure model directory exists
+os.makedirs('model', exist_ok=True)
 
 # Try importing nltk, print message if missing
 try:
