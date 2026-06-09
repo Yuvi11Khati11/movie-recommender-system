@@ -1,0 +1,22 @@
+# Virtual Environment
+venv/
+
+# Caches & Compiled files
+**/__pycache__/
+*.pyc
+
+# Local configuration & secrets
+.env
+.streamlit/secrets.toml
+.vscode/
+
+# Logs & OS metadata
+*.log
+.DS_Store
+
+# Locally generated models (prevents pushing files > 100MB to GitHub)
+*.pkl
+
+# User runtime data stores
+favorites.json
+search_history.json
