@@ -134,6 +134,9 @@ movie-recommender-system/
 3. **💬 Sentiment Analysis**: Process live user comments and reviews using NLP (BERT/VADER) to score and filter recommended titles.
 
 ---
+## 🚀 Live Demo
+
+https://cinemai-recommender.streamlit.app/
 
 # Author
 Yuvi Khati
