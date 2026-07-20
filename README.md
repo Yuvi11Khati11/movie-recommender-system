@@ -25,20 +25,6 @@
 - **Natural Language Processing**: NLTK (PorterStemmer)
 - **API Request Handling**: Requests, Python-dotenv, Pandas
 
----
-
-# Screenshots
-
-### Branding Logo
-![CinemAI Logo](assets/logo.png)
-
-*(Place your application screenshots in `assets/screenshots/` and update paths below before committing)*
-- **Autocomplete suggestions dropdown**: `assets/screenshots/search_autocomplete.png`
-- **Main Movie details page & similar matches**: `assets/screenshots/movie_details.png`
-- **Analytics dashboard tab**: `assets/screenshots/analytics_dashboard.png`
-
----
-
 # Installation
 
 ### 1. Clone the Repository
